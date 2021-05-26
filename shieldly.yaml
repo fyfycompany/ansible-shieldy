@@ -7,6 +7,10 @@
         repo: 'https://github.com/sotcsa/shieldy.git'
         dest: /opt/shieldy
         version: HEAD
+
+    - name: Override secrets
+      raw: cp /home/ubuntu/shieldy/* /opt/shieldy/.secrets/
+
     - name: Tear down existing services
       community.docker.docker_compose:
         project_src: /opt/shieldy 
