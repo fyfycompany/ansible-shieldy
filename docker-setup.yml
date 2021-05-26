@@ -1,14 +1,7 @@
 - hosts: all
   become: 'yes'
   gather_facts: false
-#  vars:
-#    user:
-#      - name: "ubuntu"
-#        ssh_key: "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCv2j9NSqlN4vLZyrAXCJ663xOMRkWQugdepAwFgRUlNSvRXgOaHKlGw5p7ECRdg2aMIEZt7aOo3ikY659Ol/Rdvw6sFT4XfMmrH2qoIDy2HYJGPlIg1UO8q5bcJt4ArUi/4vzEloMPeu8xVVAKMcREsc88IZgk/iHdy9K7U+oAVNwu3/cBA619sDFyI4Qnpg8ybfmhKHP4oZMDSzxiwXnRsHzRFjHijOjn205BbFb6xVhqW1ZwhLJyHOF32yN/ZjoJB4YVdVjQhVFyriQgjKlcfHBs10NRy8QOxbc78/Hak9xboEQ8A2tsTXFVIhsQDeZvcAT37dfEFsbHimP+42aD8LjOWQNddIu9ijOFl2HTn+n7tplhKWOU+CH4LlfZMmc6tiwsSqxFVXEZ+jZWkTlDnH6qCQEXxuIzNmKGawzY9ZXJ7dwGfNI4EVqet6P9qOYUCE6SfbLSSkT48OyBwI1AtXYqwL/by/Vi7vdPa2ThD7Uj2PNk862vzaTbk0sZYp8="
   tasks:
-    - name: All done!
-      debug:
-        msg: Packages have been successfully installed        
     - name: Install docker packages
       apt:
         name: "{{ item }}"
@@ -22,6 +15,7 @@
         - python3-pip
         - virtualenv
         - python3-setuptools
+        - git-secret
       tags:
         - docker
     - name: Add Docker s official GPG key
@@ -65,14 +59,15 @@
         append: yes
       tags:
         - docker
-    - name: Install docker-compose
-      remote_user: ubuntu
-      get_url: 
-        url : https://github.com/docker/compose/releases/download/1.29.2/docker-compose-Linux-x86_64
-        dest: /usr/local/bin/docker-compose
-        mode: 'u+x,g+x'
-    - name: Pull default Docker image
-      docker_image:
-        name: "{{ default_container_image }}"
-        source: pull
-
+ #    - name: Install docker-compose
+ #      remote_user: ubuntu
+ #      get_url: 
+ #        url : https://github.com/docker/compose/releases/download/1.29.2/docker-compose-Linux-x86_64
+ #        dest: /usr/local/bin/docker-compose
+ #        mode: 'u+x,g+x,a+x'
+    - name: Install Docker Module for Python
+      pip:
+        name: docker
+    - name: Install Docker Compose Module for Python
+      pip:
+        name: docker-compose
