@@ -1,0 +1,6 @@
+[fyfy]
+3.66.249.215
+
+[fyfy:vars]
+ansible_connection=ssh
+ansible_user=ubuntu
